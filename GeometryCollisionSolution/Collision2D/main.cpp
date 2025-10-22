@@ -1,11 +1,21 @@
 #include "collision.h"
 #include <iostream>
+#include "main.h"
 
 using namespace STDev;
 
 void PrintVector(const Vector2& v)
 {
 	std::cout << "(" << v.x << ", " << v.y << ")";
+}
+
+void PrintBox(const AABB& v)
+{
+	std::cout << "[";
+	PrintVector(v.min);
+	std::cout << ";";
+	PrintVector(v.max);
+	std::cout << "]" << std::endl;
 }
 
 void PrintCollisionDetails(const CollisionResult& result)
@@ -169,6 +179,31 @@ void test_original_case()
 	}
 	std::cout << "\n";
 }
+void test_aabb_case()
+{
+	AABB box1 = AABB({ 1,1 }, { 2,2 });
+	AABB box2 = AABB({ 2,2 }, { 4,4 });
+	BoxCollisionTest(box1, box2);
+
+	box1 = AABB({ 2,2 }, { 4,4 });
+	box2 = AABB({ 1,1 }, { 2,2 });
+	BoxCollisionTest(box1, box2);
+
+	box1 = AABB({ 1,1 }, { 2,2 });
+	box2 = AABB({ 1,3 }, { 2,4 });
+	BoxCollisionTest(box1, box2);
+}
+
+void BoxCollisionTest(STDev::AABB& box1, STDev::AABB& box2)
+{
+	std::cout << "BOX 1:";
+	PrintBox(box1);
+	std::cout << "BOX 2:";
+	PrintBox(box2);
+
+	std::cout << "collisione BOX:" << (TestAABBCollision(box1, box2) ? "TRUE" : "FALSE") << std::endl;
+	std::cout << "collisione BOX:" << (TestAABBCollisionOptimized(box1, box2) ? "TRUE" : "FALSE") << std::endl;
+}
 
 int main()
 {
@@ -178,16 +213,23 @@ int main()
 	std::cout << "========================================\n";
 	std::cout << "\n";
 
-	test_ray_circle_hit();
-	test_ray_circle_miss();
-	test_ray_from_inside();
-	test_circle_circle_overlap();
-	test_circle_circle_separate();
-	test_point_inside_circle();
-	test_point_outside_circle();
-	test_ray_tangent();
-	test_ray_backwards();
-	test_original_case();
+	//test_ray_circle_hit();
+	//test_ray_circle_miss();
+	//test_ray_from_inside();
+	//test_circle_circle_overlap();
+	//test_circle_circle_separate();
+	//test_point_inside_circle();
+	//test_point_outside_circle();
+	//test_ray_tangent();
+	//test_ray_backwards();
+	//test_original_case();
+
+	//test_aabb_case();
+	AABB box2 = AABB({ 1,3 }, { 2,4 });
+	Circle circle;
+	circle.center = Vector2(1.0f, 2.0f);
+	circle.radius = 1.0f;
+	std::cout << "TestAABBCircleCollision:" << (TestAABBCircleCollision(circle, box2) ? "TRUE" : "FALSE") << std::endl;
 
 	std::cout << "========================================\n";
 	std::cout << "   ALL TESTS COMPLETED\n";

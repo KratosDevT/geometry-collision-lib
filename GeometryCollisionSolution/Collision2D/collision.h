@@ -105,7 +105,47 @@ namespace STDev
 		{}
 	};
 
-	// Ray-Circle collision detection
+	struct AABB //Axis - Aligned Bounding Box
+	{
+		Vector2 min;
+		Vector2 max;
+
+		AABB() : min(INFINITY, INFINITY), max(-INFINITY, -INFINITY) {}
+		AABB(Vector2 _min, Vector2 _max) :min{ _min }, max{ _max } {}
+
+	};
+
+	bool TestAABBCollision(const AABB& box1, const AABB& box2)
+	{
+		bool result = false;
+		bool isCollisionOnAxisX = box1.max.x >= box2.min.x && box1.min.x <= box2.max.x;
+		bool isCollisionOnAxisY = box1.max.y >= box2.min.y && box1.min.y <= box2.max.y;
+		if (isCollisionOnAxisX && isCollisionOnAxisY)
+		{
+			result = true;
+		}
+		return result;
+	}
+
+	bool TestAABBCollisionOptimized(const AABB& box1, const AABB& box2)
+	{
+		if (box1.max.x < box2.min.x || box1.min.x > box2.max.x) return false;
+		if (box1.max.y < box2.min.y || box1.min.y > box2.max.y) return false;
+		return true;
+	}
+
+	bool TestAABBCircleCollision(const Circle& circle, const AABB& box)
+	{
+		// Trova il punto più vicino nel box al centro del cerchio
+		float XofClosestRectPoint = std::max(box.min.x, std::min(circle.center.x, box.max.x));
+		float YofClosestRectPoint = std::max(box.min.y, std::min(circle.center.y, box.max.y));
+
+		Vector2 ClosestRectPoint{ XofClosestRectPoint, YofClosestRectPoint };
+		Vector2 distanceBetweenPointAndCenterCircle = ClosestRectPoint - circle.center;
+
+		return distanceBetweenPointAndCenterCircle.magnitudeSquared() <= (circle.radius * circle.radius);
+	}
+
 	inline CollisionResult TestRayCircleCollision(const Ray& ray, const Circle& circle)
 	{
 		CollisionResult result;
