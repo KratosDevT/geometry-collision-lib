@@ -213,18 +213,18 @@ int main()
 	std::cout << "========================================\n";
 	std::cout << "\n";
 
-	//test_ray_circle_hit();
-	//test_ray_circle_miss();
-	//test_ray_from_inside();
-	//test_circle_circle_overlap();
-	//test_circle_circle_separate();
-	//test_point_inside_circle();
-	//test_point_outside_circle();
-	//test_ray_tangent();
-	//test_ray_backwards();
-	//test_original_case();
+	test_ray_circle_hit();
+	test_ray_circle_miss();
+	test_ray_from_inside();
+	test_circle_circle_overlap();
+	test_circle_circle_separate();
+	test_point_inside_circle();
+	test_point_outside_circle();
+	test_ray_tangent();
+	test_ray_backwards();
+	test_original_case();
 
-	//test_aabb_case();
+	test_aabb_case();
 	AABB box2 = AABB({ 1,3 }, { 2,4 });
 	Circle circle;
 	circle.center = Vector2(1.0f, 2.0f);
